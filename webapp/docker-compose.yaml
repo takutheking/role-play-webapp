@@ -3,7 +3,7 @@ services:
   scstore-app:
     image: scstore:1.0.0
     environment:
-      - DB_HOSTNAME=scstore-database
+      - DB_HOSTNAME=10.107.128.2
       - DB_PORT=5432
       - DB_USERNAME=scstore
       - DB_PASSWORD=scstore
@@ -11,18 +11,3 @@ services:
       - GIN_MODE=release
     ports:
       - "80:8080"
-    depends_on:
-      scstore-database:
-        condition: service_healthy
-  scstore-database:
-    image: postgres:14.2
-    container_name: "scstore-database"
-    environment:
-      - POSTGRES_USER=scstore
-      - POSTGRES_PASSWORD=scstore
-      - POSTGRES_DB=scstore
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
